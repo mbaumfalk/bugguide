@@ -86,6 +86,7 @@ function bgmap_state_json($node) {
   global $LOCATION_CODES;
   global $FIPS;
   global $FIPS_STATES;
+  global $FIPS_PROVINCES;
 
   // Debugging.
   //$output = '';
@@ -121,7 +122,15 @@ function bgmap_state_json($node) {
       continue;
     }
 
-    if (!isset($FIPS_STATES[$image->location_code])) {
+    if (isset($FIPS_STATES[$image->location_code])) {
+      $country = 'us';
+      $state_fips = $FIPS_STATES[$image->location_code];
+    }
+    elseif (isset($FIPS_PROVINCES[$image->location_code])) {
+      $country = 'ca';
+      $state_fips = $FIPS_PROVINCES[$image->location_code];
+    }
+    else {
       // We looked up IA but IA is not defined in $FIPS_STATES['IA']
       // This should never happen.
       //$output .= "<p>Did not find state '$image->location_code'</p>";
@@ -129,14 +138,13 @@ function bgmap_state_json($node) {
     }
 
     //$output .= '<p>' . $image->nid . '-' . $image->series;
-    $state_fips = $FIPS_STATES[$image->location_code];
-    if (!isset($occurrences[$state_fips])) {
-      $occurrences[$state_fips] = array(
+    if (!isset($occurrences[$country][$state_fips])) {
+      $occurrences[$country][$state_fips] = array(
         'reportCount' => 1,
       );
     }
     else {
-      $occurrences[$state_fips]['reportCount']++;
+      $occurrences[$country][$state_fips]['reportCount']++;
     }
   }
 
@@ -162,7 +170,7 @@ function bgmap_page($nid) {
     return MENU_NOT_FOUND;
   }
   drupal_add_js('https://calc.bugwoodcloud.org/static/js/iframe.js', 'external');
-  $output = '<div id="iframecontainer"><iframe src="https://maps.eddmaps.org/bugguidestate/?node=' . $node->nid . '" frameborder="0" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" height="500" width="960" scrolling="no" seamless></iframe></div>';
+  $output = '<div id="iframecontainer"><iframe src="https://maps.eddmaps.org/bugguidestate/?node=' . $node->nid . '&countries=us,ca" frameborder="0" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" height="500" width="960" scrolling="no" seamless></iframe></div>';
   $output .= '<div id="iframecontainer"><iframe src="https://maps.eddmaps.org/bugguide/?node=' . $node->nid . '" frameborder="0" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" height="500" width="960" scrolling="no" seamless></iframe></div>';
   $output .= '<p>The state map may show different results than the county map because contributors do not always submit a county, or they may have misspelled the county name.</p>';
   if (user_is_logged_in()) {
