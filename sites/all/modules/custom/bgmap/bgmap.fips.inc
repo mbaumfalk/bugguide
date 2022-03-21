@@ -76,8 +76,9 @@ $FIPS['Alaska']['Aleutians West']='2016';
 $FIPS['Alaska']['Anchorage']='2020';
 $FIPS['Alaska']['Bethel']='2050';
 $FIPS['Alaska']['Bristol Bay']='2060';
-$FIPS['Alaska']['Chugach']='2063';
-$FIPS['Alaska']['Copper River']='2066';
+// eddmaps still has Valdez-Cordova included.
+$FIPS['Alaska']['Chugach']='2261';
+$FIPS['Alaska']['Copper River']='2261';
 $FIPS['Alaska']['Denali']='2068';
 $FIPS['Alaska']['Dillingham']='2070';
 $FIPS['Alaska']['Fairbanks North Star']='2090';
@@ -3147,6 +3148,17 @@ $FIPS['Wyoming']['Teton']='56039';
 $FIPS['Wyoming']['Uinta']='56041';
 $FIPS['Wyoming']['Washakie']='56043';
 $FIPS['Wyoming']['Weston']='56045';
+
+// Counties with changed or alternate names (with current codes):
+// https://www.census.gov/programs-surveys/geography/technical-documentation/county-changes.html
+$FIPS['Alaska']['Wade Hampton']='2158';
+$FIPS['Alaska']['Valdez-Cordova']='2261';
+$FIPS['Illinois']['La Salle']='17099';
+$FIPS['Louisiana']['La Salle']='22059';
+$FIPS['New Hampshire']['Coös']='33007';
+$FIPS['New Mexico']['Dona Ana']='35013';
+$FIPS['Rhode Island']['South']='44009';
+$FIPS['South Dakota']['Shannon']='46102';
 
 $FIPS_STATES['AK']='02';
 $FIPS_STATES['AL']='01';
