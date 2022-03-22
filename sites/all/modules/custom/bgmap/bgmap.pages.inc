@@ -21,8 +21,8 @@ function bgmap_json($node) {
   $result = db_query("SELECT bgi.nid, bgi.location_code, bgi.county, bis.series
     FROM {bgimage} bgi
     LEFT JOIN {bgimage_series} bis ON bgi.nid = bis.nid
-    WHERE bgi.parent_idx REGEXP :node",
-    array(':node' => '^' . $node->field_parent[LANGUAGE_NONE][0]['value'] . ',' . $node->nid . ',')
+    WHERE bgi.parent_idx LIKE :node",
+    array(':node' => $node->field_parent[LANGUAGE_NONE][0]['value'] . ',' . $node->nid . ',%'),
     )->fetchAll();
 
   // Compile a list of states and counties for which occurrence records exist.
@@ -100,8 +100,8 @@ function bgmap_state_json($node) {
   $result = db_query("SELECT bgi.nid, bgi.location_code, bis.series
     FROM {bgimage} bgi
     LEFT JOIN {bgimage_series} bis ON bgi.nid = bis.nid
-    WHERE bgi.parent_idx REGEXP :node",
-    array(':node' => '^' . $node->field_parent[LANGUAGE_NONE][0]['value'] . ',' . $node->nid . ',')
+    WHERE bgi.parent_idx LIKE :node",
+    array(':node' => $node->field_parent[LANGUAGE_NONE][0]['value'] . ',' . $node->nid . ',%'),
     )->fetchAll();
 
   // Compile a list of states for which occurrence records exist.
