@@ -5,17 +5,24 @@ include_once 'bgmap.fips.inc';
 // /node/203/bgmap/json is called by maps.eddmaps.org to retrieve data to
 // populate the map.
 function bgmap_json($node) {
-  global $LOCATION_CODES;
-  global $FIPS;
-
-  // Debugging.
-  //$output = '';
-
   // Sanity check.
   if ($node->type != 'bgpage') {
     // Maps are only available for taxa.
     drupal_json_output(array());
   }
+
+  drupal_add_http_header('Access-Control-Allow-Origin', "*");
+  drupal_add_http_header('Access-Control-Allow-Methods', 'GET');
+  if (($cache = cache_get('bgmap:json:' . $node->nid))) {
+    drupal_json_output($cache->data);
+    return;
+  }
+
+  global $LOCATION_CODES;
+  global $FIPS;
+
+  // Debugging.
+  //$output = '';
 
   // Find children of this taxon.
   $result = db_query("SELECT bgi.location_code, TRIM(LOWER(bgi.county)) AS county_trim, COUNT(*) AS count
@@ -70,23 +77,29 @@ function bgmap_json($node) {
   // Debugging
   // watchdog('bgmap', $output);
 
-  drupal_add_http_header('Access-Control-Allow-Origin', "*");
-  drupal_add_http_header('Access-Control-Allow-Methods', 'GET');
+  cache_set('bgmap:json:' . $node->nid, $occurrences, 'cache', time() + 86400);
   drupal_json_output($occurrences);
 }
 
 function bgmap_state_json($node) {
+  if ($node->type != 'bgpage') {
+    // Maps are only available for taxa.
+    drupal_json_output(array());
+  }
+
+  drupal_add_http_header('Access-Control-Allow-Origin', "*");
+  drupal_add_http_header('Access-Control-Allow-Methods', 'GET');
+  if (($cache = cache_get('bgmap:state:json:' . $node->nid))) {
+    drupal_json_output($cache->data);
+    return;
+  }
+
   global $LOCATION_CODES;
   global $FIPS_STATES;
   global $FIPS_PROVINCES;
 
   // Debugging.
   //$output = '';
-
-  if ($node->type != 'bgpage') {
-    // Maps are only available for taxa.
-    drupal_json_output(array());
-  }
 
   // Find children of this taxon.
   $result = db_query("SELECT bgi.location_code, COUNT(*) AS count
@@ -139,8 +152,7 @@ function bgmap_state_json($node) {
   // Debugging
   //watchdog('bgmap', $output);
 
-  drupal_add_http_header('Access-Control-Allow-Origin', "*");
-  drupal_add_http_header('Access-Control-Allow-Methods', 'GET');
+  cache_set('bgmap:state:json:' . $node->nid, $occurrences, 'cache', time() + 86400);
   drupal_json_output($occurrences);
 }
 
