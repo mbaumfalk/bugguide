@@ -166,9 +166,10 @@ function bgmap_page($nid) {
   if (!$node) {
     return MENU_NOT_FOUND;
   }
-  drupal_add_js('https://calc.bugwoodcloud.org/static/js/iframe.js', 'external');
-  $output = '<div id="iframecontainer"><iframe src="https://maps.eddmaps.org/bugguidestate/?node=' . $node->nid . '&countries=us,ca" frameborder="0" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" height="500" width="960" scrolling="no" seamless></iframe></div>';
-  $output .= '<div id="iframecontainer"><iframe src="https://maps.eddmaps.org/bugguide/?node=' . $node->nid . '" frameborder="0" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" height="500" width="960" scrolling="no" seamless></iframe></div>';
+  // drupal_add_js('https://calc.bugwoodcloud.org/static/js/iframe.js', 'external');
+  // $output = '<div id="iframecontainer"><iframe src="https://maps.eddmaps.org/bugguidestate/?node=' . $node->nid . '&countries=us,ca" frameborder="0" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" height="500" width="960" scrolling="no" seamless></iframe></div>';
+  // $output .= '<div id="iframecontainer"><iframe src="https://maps.eddmaps.org/bugguide/?node=' . $node->nid . '&states=AL,AK,AZ,AR,CA,CO,CT,DE,DC,FL,GA,HI,ID,IL,IN,IA,KS,KY,LA,ME,MD,MA,MI,MN,MS,MO,MT,NE,NV,NH,NJ,NM,NY,NC,ND,OH,OK,OR,PA,RI,SC,SD,TN,TX,UT,VT,VA,WA,WV,WI,WY" frameborder="0" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" height="500" width="960" scrolling="no" seamless></iframe></div>';
+  $output = '<div id="iframecontainer"><iframe src="' . url(drupal_get_path('module', 'bgmap')) . '/leaflet/#' . $node->nid . '" frameborder="0" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" height="800" width="960" scrolling="no" seamless></iframe></div>';
   $output .= '<p>The state map may show different results than the county map because contributors do not always submit a county, or they may have misspelled the county name.</p>';
   if (user_is_logged_in()) {
     $output .= '<p>See <a href="/advanced-search?taxon=' . $nid . '">records that make up this map</a>.';

@@ -1,0 +1,25 @@
+body {
+  margin: 0;
+}
+#map {
+  background: #fff;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+  position: absolute;
+}
+.info {
+  background: #fff;
+  padding: 10px;
+  border: 1px solid #888;
+  border-radius: 5px;
+}
+@media (prefers-color-scheme: dark) {
+  #map {
+    background: #181a1b;
+  }
+  .info {
+    background: #181a1b;
+    color: #eee;
+  }
+}
